@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Crisis Command Center - Advanced Logistics Learning Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 15px 35px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(238, 90, 36, 0.6);
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav li {
+            margin: 0 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 10px 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            color: #2a5298;
+            border-bottom-color: #2a5298;
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 0;
+            background: white;
+            margin: 40px 0;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        section:nth-child(even) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        section:nth-child(even) h2 {
+            color: white;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #2a5298;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px 0;
+            color: #1e3c72;
+        }
+
+        section:nth-child(even) h3 {
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* Problem Cards */
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .problem-card {
+            background: rgba(255,255,255,0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border-left: 5px solid #ee5a24;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .problem-card h4 {
+            color: #1e3c72;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .problem-card .root-cause {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 3px solid #ffc107;
+        }
+
+        .problem-card .consequences {
+            background: #f8d7da;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 3px solid #dc3545;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background: linear-gradient(to bottom, #2a5298, #ee5a24);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            border-radius: 3px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background: inherit;
+            width: 50%;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -17px;
+            background: white;
+            border: 4px solid #ee5a24;
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-item:nth-child(even)::after {
+            left: -16px;
+        }
+
+        .timeline-content {
+            padding: 20px 30px;
+            background: rgba(255,255,255,0.95);
+            position: relative;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            color: #333;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: scale(1.05);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* PRD Section */
+        .prd-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .prd-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .prd-card {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Interactive Demo */
+        .demo-container {
+            background: #1a1a2e;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            color: white;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #0f4c75 0%, #3282b8 100%);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: scale(1.05);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00ff88;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Crisis Simulator */
+        .crisis-simulator {
+            background: #2c3e50;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            color: white;
+        }
+
+        .crisis-event {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid #e74c3c;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .decision-buttons {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .decision-btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .decision-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        /* Sources */
+        .sources-list {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .sources-list ol {
+            padding-left: 20px;
+        }
+
+        .sources-list li {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item::after {
+                left: 60px;
+            }
+            
+            .timeline::after {
+                left: 60px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0%;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav li {
+                margin: 5px 0;
+            }
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Warehouse Crisis Command Center</h1>
+                <p>Master Real-World Logistics Through Immersive Crisis Management Simulation</p>
+                <a href="#simulation" class="cta-button">Start Simulation</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#problems" onclick="smoothScroll('problems')">Real-World Problems</a></li>
+                <li><a href="#simulation" onclick="smoothScroll('simulation')">Simulation</a></li>
+                <li><a href="#features" onclick="smoothScroll('features')">Features</a></li>
+                <li><a href="#prd" onclick="smoothScroll('prd')">Product Design</a></li>
+                <li><a href="#sources" onclick="smoothScroll('sources')">Research</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Problem Statement -->
+    <section id="problems">
+        <div class="container">
+            <h2>Real-World Warehouse Management Challenges</h2>
+            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 40px; color: #666;">
+                Based on 2024-2025 industry research, these are the critical challenges facing warehouse operations globally.
+            </p>
+            
+            <div class="problems-grid">
+                <div class="problem-card fade-in">
+                    <h4>🎯 Inventory Accuracy Crisis</h4>
+                    <p>Warehouses struggling with 65-75% accuracy rates, leading to stockouts despite having inventory on-site.</p>
+                    <div class="root-cause">
+                        <strong>Root Causes:</strong> Manual processes, poor data integration, human error
+                    </div>
+                    <div class="consequences">
+                        <strong>Impact:</strong> Customer dissatisfaction, lost sales, excess carrying costs
+                    </div>
+                </div>
+
+                <div class="problem-card fade-in">
+                    <h4>👥 Labor Productivity Crisis</h4>
+                    <p>Major warehouses experiencing 150% annual turnover rates with critical skills gaps.</p>
+                    <div class="root-cause">
+                        <strong>Root Causes:</strong> Skills gap, high turnover, inadequate training, seasonal fluctuations
+                    </div>
+                    <div class="consequences">
+                        <strong>Impact:</strong> Increased costs, delayed fulfillment, quality issues
+                    </div>
+                </div>
+
+                <div class="problem-card fade-in">
+                    <h4>📦 Space Utilization Inefficiency</h4>
+                    <p>Average warehouse capacity utilization only 27-30%, with picking routes 40-60% longer than optimal.</p>
+                    <div class="root-cause">
+                        <strong>Root Causes:</strong> Poor layout design, inadequate slotting optimization, inflexible infrastructure
+                    </div>
+                    <div class="consequences">
+                        <strong>Impact:</strong> Higher real estate costs, reduced throughput, increased labor costs
+                    </div>
+                </div>
+
+                <div class="problem-card fade-in">
+                    <h4>🔧 Technology Integration Complexity</h4>
+                    <p>Legacy systems failing to integrate with modern e-commerce platforms, creating data visibility gaps.</p>
+                    <div class="root-cause">
+                        <strong>Root Causes:</strong> Legacy systems, poor data standards, integration challenges
+                    </div>
+                    <div class="consequences">
+                        <strong>Impact:</strong> Inventory discrepancies, manual workarounds, operational inefficiencies
+                    </div>
+                </div>
+
+                <div class="problem-card fade-in">
+                    <h4>🛒 Omnichannel Fulfillment Complexity</h4>
+                    <p>Same-day delivery expectations conflicting with traditional fulfillment processes.</p>
+                    <div class="root-cause">
+                        <strong>Root Causes:</strong> Different service requirements across channels, inventory allocation conflicts
+                    </div>
+                    <div class="consequences">
+                        <strong>Impact:</strong> Service level failures, increased costs, customer churn
+                    </div>
+                </div>
+
+                <div class="problem-card fade-in">
+                    <h4>🔄 Returns Processing Overload</h4>
+                    <p>Returns processing overwhelming standard operations, with 300% spikes during peak periods.</p>
+                    <div class="root-cause">
+                        <strong>Root Causes:</strong> Inadequate reverse logistics infrastructure, process complexity
+                    </div>
+                    <div class="consequences">
+                        <strong>Impact:</strong> Bottlenecks, increased handling costs, customer service issues
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simulation Overview -->
+    <section id="simulation">
+        <div class="container">
+            <h2>Crisis Management Simulation</h2>
+            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 40px;">
+                Experience a 72-hour crisis scenario as a Warehouse Operations Manager during Black Friday weekend.
+            </p>
+
+            <div class="timeline">
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h3>Hour 1</h3>
+                        <p><strong>Inventory Discrepancy:</strong> 2,000 units of bestselling product missing from system</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h3>Hour 8</h3>
+                        <p><strong>System Failure:</strong> WMS server experiencing intermittent failures</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h3>Hour 16</h3>
+                        <p><strong>Workforce Crisis:</strong> 30% of temporary workforce calls in sick</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h3>Hour 24</h3>
+                        <p><strong>Supply Delay:</strong> Major supplier delivery delayed by 24 hours</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h3>Hour 36</h3>
+                        <p><strong>Returns Spike:</strong> Customer returns increase by 300% due to damaged goods</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h3>Hour 48</h3>
+                        <p><strong>Safety Issue:</strong> Fire suppression system malfunction in Section C</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h3>Hour 60</h3>
+                        <p><strong>Shipping Crisis:</strong> Regional delivery partner strike forces alternative solutions</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h3>Hour 72</h3>
+                        <p><strong>Performance Review:</strong> Final assessment and lessons learned session</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Demo -->
+    <section>
+        <div class="container">
+            <h2>Live Simulation Dashboard</h2>
+            <p style="text-align: center; margin-bottom: 30px;">Experience real-time decision making with our interactive demo</p>
+            
+            <div class="demo-container">
+                <h3 style="color: #00ff88; text-align: center;">⚡ CRISIS ACTIVE: Multiple Issues Detected</h3>
+                
+                <div class="dashboard">
+                    <div class="metric-card">
+                        <div class="metric-value" id="accuracy">73%</div>
+                        <div class="metric-label">Inventory Accuracy</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="productivity">-18%</div>
+                        <div class="metric-label">Productivity vs Target</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="orders">1,247</div>
+                        <div class="metric-label">Orders Pending</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="cost">$47K</div>
+                        <div class="metric-label">Crisis Cost Impact</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="crisis-simulator">
+                <div class="crisis-event">
+                    <h4>🚨 URGENT: System Alert</h4>
+                    <p id="crisis-text">WMS server is experiencing intermittent failures. 847 orders are stuck in processing. Your team is requesting immediate guidance.</p>
+                    
+                    <div class="decision-buttons">
+                        <button class="decision-btn" onclick="makeDecision('restart')">Restart WMS Server</button>
+                        <button class="decision-btn" onclick="makeDecision('manual')">Switch to Manual Processing</button>
+                        <button class="decision-btn" onclick="makeDecision('backup')">Activate Backup System</button>
+                        <button class="decision-btn" onclick="makeDecision('escalate')">Escalate to IT Emergency</button>
+                    </div>
+                    
+                    <div id="decision-result" style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px; display: none;">
+                        <p id="result-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features">
+        <div class="container">
+            <h2>Learning Platform Features</h2>
+            
+            <div class="features-grid">
+                <div class="feature-item fade-in">
+                    <span class="feature-icon">🏗️</span>
+                    <h3>3D Warehouse Visualization</h3>
+                    <p>Interactive facility visualization with real-time status updates and clickable zones for detailed information.</p>
+                </div>
+                
+                <div class="feature-item fade-in">
+                    <span class="feature-icon">⚡</span>
+                    <h3>Crisis Event Engine</h3>
+                    <p>Dynamic scenario progression with randomization elements and escalation mechanics based on decisions.</p>
+                </div>
+                
+                <div class="feature-item fade-in">
+                    <span class="feature-icon">📊</span>
+                    <h3>Real-Time Analytics</h3>
+                    <p>Live KPI tracking with performance dashboards and comparative benchmarking against industry standards.</p>
+                </div>
+                
+                <div class="feature-item fade-in">
+                    <span class="feature-icon">👥</span>
+                    <h3>Stakeholder Communication</h3>
+                    <p>Simulated messages from customers, suppliers, and management with realistic response requirements.</p>
+                </div>
+                
+                <div class="feature-item fade-in">
+                    <span class="feature-icon">🧠</span>
+                    <h3>Decision Tree Framework</h3>
+                    <p>Guided problem-solving methodology with consequence modeling and alternative path exploration.</p>
+                </div>
+                
+                <div class="feature-item fade-in">
+                    <span class="feature-icon">🎯</span>
+                    <h3>Performance Assessment</h3>
+                    <p>Comprehensive evaluation across multiple metrics with personalized improvement recommendations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRD Section -->
+    <section id="prd" class="prd-section">
+        <div class="container">
+            <h2>Product Requirements & Development</h2>
+            
+            <div class="prd-grid">
+                <div class="prd-card fade-in">
+                    <h3>🎯 Target Users</h3>
+                    <ul>
+                        <li>Logistics & supply chain management students</li>
+                        <li>New warehouse managers and supervisors</li>
+                        <li>Cross-functional teams needing warehouse operations understanding</li>
+                        <li>Executive teams seeking operational insight</li>
+                    </ul>
+                </div>
+                
+                <div class="prd-card fade-in">
+                    <h3>🏆 Success Metrics</h3>
+                    <ul>
+                        <li>85% improved crisis decision-making post-simulation</li>
+                        <li>90% completion rate for full experience</li>
+                        <li>3+ hours average engagement time</li>
+                        <li>Net Promoter Score of 70+</li>
+                    </ul>
+                </div>
+                
+                <div class="prd-card fade-in">
+                    <h3>⚙️ Technical Requirements</h3>
+                    <ul>
+                        <li>Web-based platform for accessibility</li>
+                        <li>Mobile-responsive design</li>
+                        <li>Sub-2 second response times</li>
+                        <li>Support for 50+ concurrent users</li>
+                        <li>99.5% uptime during learning periods</li>
+                    </ul>
+                </div>
+                
+                <div class="prd-card fade-in">
+                    <h3>📈 Implementation Timeline</h3>
+                    <ul>
+                        <li><strong>Phase 1 (Months 1-3):</strong> Core Development</li>
+                        <li><strong>Phase 2 (Months 4-6):</strong> Enhanced Features</li>
+                        <li><strong>Phase 3 (Months 7-9):</strong> Pilot & Refinement</li>
+                        <li><strong>Phase 4 (Months 10-12):</strong> Launch & Scale</li>
+                    </ul>
+                </div>
+                
+                <div class="prd-card fade-in">
+                    <h3>🚀 Core Features (MVP)</h3>
+                    <ul>
+                        <li>Interactive 3D warehouse visualization</li>
+                        <li>Crisis event engine with decision trees</li>
+                        <li>Real-time performance dashboard</li>
+                        <li>Communication hub simulation</li>
+                        <li>Performance analytics and feedback</li>
+                    </ul>
+                </div>
+                
+                <div class="prd-card fade-in">
+                    <h3>💡 Advanced Features</h3>
+                    <ul>
+                        <li>Collaborative team-based modes</li>
+                        <li>AI-powered coaching and hints</li>
+                        <li>Custom scenario builder tools</li>
+                        <li>LMS integration capabilities</li>
+                        <li>Industry-specific customizations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Benefits -->
+    <section>
+        <div class="container">
+            <h2>Why This Simulation Works</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin: 40px 0;">
+                <div style="padding: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white;">
+                    <h3>🧠 Systems Thinking Development</h3>
+                    <p>Students experience how warehouse operations are interconnected systems where problems cascade and solutions in one area can create issues in another.</p>
+                </div>
+                
+                <div style="padding: 30px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 15px; color: white;">
+                    <h3>⚡ Decision-Making Under Pressure</h3>
+                    <p>Replicates the high-pressure, time-sensitive nature of actual warehouse crisis management, building comfort with ambiguous situations.</p>
+                </div>
+                
+                <div style="padding: 30px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 15px; color: white;">
+                    <h3>👥 Multi-Stakeholder Perspective</h3>
+                    <p>Forces consideration of diverse viewpoints (customers, employees, suppliers, management) and their
